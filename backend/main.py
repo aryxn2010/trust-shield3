@@ -33,6 +33,13 @@ def root():
 
 if __name__ == "__main__":
     import uvicorn
-    # We run the app using the string reference "app.main:app" to enable reload
-    print("🚀 Starting TrustShield Server on Windows (Proactor Loop Enabled)...")
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
+    
+    # Get the PORT from the environment (Render/Railway sets this automatically)
+    # If not found (e.g., on your laptop), default to 8000
+    port = int(os.environ.get("PORT", 8000))
+    
+    print(f"🚀 Starting TrustShield Server on Port {port}...")
+    
+    # 1. Pass 'app' directly (safer than string "backend.main:app")
+    # 2. Set reload=False for production (saves memory/cpu)
+    uvicorn.run(app, host="0.0.0.0", port=port)
